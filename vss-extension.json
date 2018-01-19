@@ -1,0 +1,48 @@
+{
+  "manifestVersion": 1,
+  "id": "sumologic-tools",
+  "name": "Sumo Logic",
+  "version": "0.1.0",
+  "publisher": "vibrato",
+  "public": false,
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "description": "Build and release tasks to interact with the SumoLogic API",
+  "categories": [
+    "Build and release"
+  ],
+  "tags": [
+    "sumologic",
+    "sumo logic",
+    "collector"
+  ],
+  "icons": {
+    "default": "icon.png"
+  },
+  "content": {
+    "details": {
+      "path": "overview.md"
+    }
+  },
+  "files": [
+    {
+      "path": "CreateSumoLogicCollectorAndHttpSource"
+    }
+  ],
+
+  "contributions": [
+    {
+      "id": "CreateSumoLogicCollectorAndHttpSource",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "CreateSumoLogicCollectorAndHttpSource"
+      }
+    }
+  ]
+}
