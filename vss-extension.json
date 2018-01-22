@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "sumologic-tools",
   "name": "Sumo Logic",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "publisher": "vibrato",
   "public": false,
   "targets": [
@@ -29,19 +29,32 @@
   },
   "files": [
     {
-      "path": "CreateSumoLogicCollectorAndHttpSource"
+      "path": "CreateSumoLogicHostedCollector"
+    },
+    {
+      "path": "CreateSumoLogicHttpSource"
     }
   ],
 
   "contributions": [
     {
-      "id": "CreateSumoLogicCollectorAndHttpSource",
+      "id": "CreateSumoLogicHostedCollector",
       "type": "ms.vss-distributed-task.task",
       "targets": [
         "ms.vss-distributed-task.tasks"
       ],
       "properties": {
-        "name": "CreateSumoLogicCollectorAndHttpSource"
+        "name": "CreateSumoLogicHostedCollector"
+      }
+    },
+    {
+      "id": "CreateSumoLogicHttpSource",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "CreateSumoLogicHttpSource"
       }
     }
   ]

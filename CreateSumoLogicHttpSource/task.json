@@ -1,15 +1,15 @@
 {
-  "id": "31f040e5-e040-4336-878a-59a493355534",
-  "name": "CreateSumoLogicHostedCollectorAndHttpSource",
-  "friendlyName": "Create Sumo Logic Collector and HTTP Source",
-  "description": "Create Sumo Logic Collector and HTTP Source",
+  "id": "2fe37b3b-5766-4ddc-9a0d-4607912f06c9",
+  "name": "CreateSumoLogicHttpSource",
+  "friendlyName": "Create Sumo Logic HTTP Source",
+  "description": "Create Sumo Logic HTTP Source",
   "helpMarkDown": "",
   "category": "Utility",
   "visibility": [ "Build", "Release" ],
   "author": "William Tsoi & Chris Fowles - Vibrato",
   "version": {
-    "Major": 0,
-    "Minor": 1,
+    "Major": 1,
+    "Minor": 0,
     "Patch": 0
   },
   "demands": [ ],
@@ -46,15 +46,7 @@
       "label": "Sumo Logic Collector Name",
       "defaultValue": "",
       "required": true,
-      "helpMarkDown": ""
-    },
-    {
-      "name": "SumoLogicCollectorCategory",
-      "type": "string",
-      "label": "Sumo Logic Collector Category",
-      "defaultValue": "",
-      "required": true,
-      "helpMarkDown": ""
+      "helpMarkDown": "The name of the Sumo Logic Collector to create this HTTP Endpoint for"
     },
     {
       "name": "SumoLogicSourceName",
@@ -62,21 +54,37 @@
       "label": "Sumo Logic Source Name",
       "defaultValue": "",
       "required": true,
-      "helpMarkDown": ""
+      "helpMarkDown": "The name of the HTTP Source"
     },
     {
-      "name": "SumoLogicCollectorCategory",
+      "name": "SumoLogicSourceDescription",
+      "type": "string",
+      "label": "Sumo Logic Source Description",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "A description for the HTTP Source"
+    },
+    {
+      "name": "SumoLogicSourceCategory",
       "type": "string",
       "label": "Sumo Logic Source Category",
       "defaultValue": "",
       "required": true,
-      "helpMarkDown": ""
+      "helpMarkDown": "Source Category for the HTTP Source"
+    },
+    {
+      "name": "SumoLogicEndpointVariableName",
+      "type": "string",
+      "label": "Task variable for the HTTP Source URL",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "The task variable used to store the generated HTTP Source URL"
     }
   ],
-  "instanceNameFormat": "Create Sumo Logic Collector and Http Source",
+  "instanceNameFormat": "Create Sumo Logic Http Source",
   "execution": {
     "PowerShell3": {
-      "target": "$(currentDirectory)\\CreateSumoLogicCollectorAndHttpSource.ps1"
+      "target": "$(currentDirectory)\\CreateSumoLogicHttpSource.ps1"
     }
   }
 }

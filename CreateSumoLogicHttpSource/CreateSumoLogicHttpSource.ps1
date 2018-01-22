@@ -1,68 +1,24 @@
 Trace-VstsEnteringInvocation $MyInvocation
+Import-Module -Name $PSScriptRoot\ps_modules\VstsTaskSdk\VstsTaskSdk.psm1
 
 # Get inputs.
 $SumoLogicAccessKeyId = Get-VstsInput -Name SumoLogicAccessKeyId -Require
 $SumoLogicAccessKey = Get-VstsInput -Name SumoLogicAccessKey -Require
 $SumoLogicEndpoint = Get-VstsInput -Name SumoLogicEndpoint -Require
 $SumoLogicCollectorName = Get-VstsInput -Name SumoLogicCollectorName -Require
-$SumoLogicCollectorCategory = Get-VstsInput -Name SumoLogicCollectorCategory -Require
 $SumoLogicSourceName = Get-VstsInput -Name SumoLogicSourceName -Require
+$SumoLogicSourceDescription = Get-VstsInput -Name SumoLogicSourceDescription
 $SumoLogicSourceCategory = Get-VstsInput -Name SumoLogicSourceCategory -Require
+$SumoLogicEndpointVariableName = Get-VstsInput -Name SumoLogicEndpointVariableName
 
 Write-Output "AccessKeyId: $SumoLogicAccessKeyId"
 Write-Output "AccessKey: $($SumoLogicAccessKey.Substring(0,8))"
 Write-Output "APIEndpoint: $SumoLogicEndpoint"
 Write-Output "CollectorName: $SumoLogicCollectorName"
-Write-Output "CollectorCategory: $SumoLogicCollectorCategory"
 Write-Output "SourceName: $SumoLogicSourceName"
+Write-Output "SourceDescription: $SumoLogicSourceDescription"
 Write-Output "SourceCategory: $SumoLogicSourceCategory"
-
-function New-SumoLogicHostedCollector {
-    param (
-        [Parameter(Mandatory=$true)]
-            [ValidateNotNull()]
-            [ValidateNotNullOrEmpty()]
-            [Hashtable]$AuthHeader,
-        [Parameter(Mandatory=$true)]
-            [ValidateNotNull()]
-            [ValidateNotNullOrEmpty()]
-            [string]$ApiEndpoint,
-        [Parameter(Mandatory=$true)]
-            [ValidateNotNull()]
-            [ValidateNotNullOrEmpty()]
-            [string]$CollectorName,
-        [Parameter(Mandatory=$false)]
-            [string]$CollectorDescription,
-        [Parameter(Mandatory=$false)]
-            [string]$CollectorCategory,
-        [Parameter(Mandatory=$false)]
-            [string]$CollectorHostName,
-        [Parameter(Mandatory=$false)]
-            [string]$CollectorTimeZone,
-        [switch]$Ephemeral
-    )
-
-    $CollectorData = @{
-        collectorType = "Hosted"
-        name = $SumoLogicCollectorName
-    }
-
-    if($CollectorDescription) { $CollectorData.Add('description', $CollectorDescription) }
-    if($CollectorCategory)    { $CollectorData.Add('category', $CollectorCategory) }
-    if($CollectorHostName)    { $CollectorData.Add('hostName', $CollectorHostName) }
-    if($Ephemeral)            { $CollectorData.Add('ephemeral', $true ) }
-    if($CollectorTimeZone)    { $CollectorData.Add('timeZone', $CollectorTimeZone) }
-
-    $RequestData = @{
-        collector = $CollectorData
-    }
-
-    Write-Verbose $CollectorData
-
-    $NewCollector = Invoke-WebRequest -Method Post -Headers $AuthHeader -Uri ($ApiEndpoint+'/collectors') -Body ($RequestData | ConvertTo-Json) -UseBasicParsing
-
-    return $NewCollector.Content | ConvertFrom-Json
-}
+Write-Output "SumoLogicEndpointVariableName: $SumoLogicEndpointVariableName"
 
 function New-SumoLogicHttpSource {
     param (
@@ -127,12 +83,7 @@ $Collector = $CollectorsCollection.collectors.Where({$_.name.ToLower() -eq $Sumo
 
 if(-not $Collector)
 {
-    Write-Output "Creating Hosted Collector: $SumoLogicCollectorName"
-    $Collector = (New-SumoLogicHostedCollector `
-        -AuthHeader $AuthHeader  `
-        -ApiEndpoint $SumoLogicEndpoint `
-        -CollectorName $SumoLogicCollectorName `
-        -CollectorCategory $SumoLogicCollectorCategory).collector
+    Write-Error "Collector doesn't exist! Please create a hosted collector first using the Create Sumo Logic Hosted Collector VSTS task."
 }
 else
 {
@@ -150,12 +101,12 @@ if ($Collector)
     if(-not $Source)
     {
         Write-Output "Creating HTTP Source: $SumoLogicSourceName"
-        $Source = (New-SumoLogicHttpSource 
+        $Source = (New-SumoLogicHttpSource `
             -AuthHeader $AuthHeader `
             -ApiEndpoint $SumoLogicEndpoint `
             -CollectorId $Collector.id `
             -SourceName $SumoLogicSourceName `
-            -SourceDescription $SourceDescription `
+            -SourceDescription $SumoLogicSourceDescription `
             -SourceCategory $SumoLogicSourceCategory).source
     }
     else
@@ -166,7 +117,7 @@ if ($Collector)
 
 if ($Source)
 {
-    Set-OctopusVariable -name "SumoLogicEndpointUri" -value $Source.url
+    Set-TaskVariable $SumoLogicEndpointVariableName $Source.url
 }
 else
 {
