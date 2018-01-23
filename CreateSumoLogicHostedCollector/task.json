@@ -1,5 +1,5 @@
 {
-  "id": "31f040e5-e040-4336-878a-59a493355534",
+  "id": "222ee68a-d7b7-4c66-aa9e-b510b81d447e",
   "name": "CreateSumoLogicHostedCollector",
   "friendlyName": "Create Sumo Logic Hosted Collector",
   "description": "Create Sumo Logic Hosted Collector",
@@ -10,7 +10,7 @@
   "version": {
     "Major": 1,
     "Minor": 0,
-    "Patch": 0
+    "Patch": 1
   },
   "demands": [ ],
   "minimumAgentVersion": "1.95.0",
