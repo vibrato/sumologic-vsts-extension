@@ -7,3 +7,5 @@ Currently this extension contains the following two tasks:
 - Create Sumo Logic HTTP Source
 
 These two tasks are especially useful when you wish to use a [hosted collector](https://help.sumologic.com/Send-Data/Hosted-Collectors/Configure-a-Hosted-Collector), so that application logs can be sent through an HTTP endpoint rather than an installed collector.
+
+Source code for this extension is hosted on [https://github.com/vibrato/sumologic-vsts-extension](https://github.com/vibrato/sumologic-vsts-extension).
